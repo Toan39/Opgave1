@@ -10,34 +10,34 @@ class OpgaveForm : Form
 
         this.BackColor = Color.White;
         this.Size = new Size(400, 400);
-        this.Text = "TextBox Example";
-        this.ResumeLayout(false);
-        this.PerformLayout();
+        // this.Text = "TextBox Example";
+        // this.ResumeLayout(false);
+        // this.PerformLayout();
        
         
-        TextBox tekst;
-        tekst = new TextBox();
+        // TextBox tekst;
+        // tekst = new TextBox();
 
-        // 
-        // textBox1
-        // 
-        tekst.AcceptsReturn = true;
-        tekst.AcceptsTab = true;
-        tekst.Dock = DockStyle.Fill;
-        tekst.Multiline = true;
-        tekst.ScrollBars = ScrollBars.Vertical;
+        // // 
+        // // textBox1
+        // // 
+        // tekst.AcceptsReturn = true;
+        // tekst.AcceptsTab = true;
+        // tekst.Dock = DockStyle.Fill;
+        // tekst.Multiline = true;
+        // tekst.ScrollBars = ScrollBars.Vertical;
 
-        this.Controls.Add(tekst);
+        // this.Controls.Add(tekst);
 
 
     }
     //voert de methode uit met bepaalde waarde//
     void tekenScherm(object obj, PaintEventArgs pea)
     {
-        double X, Y;
-        Console.Write("X = "); X = Convert.ToDouble(Console.ReadLine());
-        Console.Write("Y = "); Y = Convert.ToDouble(Console.ReadLine());
-        this.Mandelbrot(X,Y);
+        // double X, Y;
+        // Console.Write("X = "); X = Convert.ToDouble(Console.ReadLine());
+        // Console.Write("Y = "); Y = Convert.ToDouble(Console.ReadLine());
+        this.Mandelbrot(0.5,0.8);
         
     }
 
