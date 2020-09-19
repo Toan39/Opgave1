@@ -1,21 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MandelbrotConsole
 {
     class Program
     {
 
-
         static void Main(string[] args)
         {
-            int mg(double X, double Y)
+            int mg(double X, double Y, int max)
             {
                 double a = 0.0;
                 double b = 0.0;
@@ -23,7 +15,7 @@ namespace MandelbrotConsole
                 double newA;
                 double newB;
 
-                while ((a * a + b * b <= 4.0) && (n < 1000000))
+                while ((a * a + b * b <= 4.0) && (n < max))
                 {
                     newA = a * a - b * b + X;
                     newB = 2.0 * a * b + Y;
@@ -36,9 +28,11 @@ namespace MandelbrotConsole
                 return n;
             }
             double x, y;
+            int m;
             Console.Write("X = "); x = Convert.ToDouble(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
             Console.Write("Y = "); y = Convert.ToDouble(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
-            Console.WriteLine(mg(x, y));
+            Console.Write("Max = "); m = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine(mg(x, y, m));
             Console.ReadLine();
         }
     }
