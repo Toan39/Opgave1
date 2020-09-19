@@ -36,8 +36,8 @@ namespace MandelbrotConsole
                 return n;
             }
             double x, y;
-            Console.Write("X = "); x = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Y = "); y = Convert.ToDouble(Console.ReadLine());
+            Console.Write("X = "); x = Convert.ToDouble(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
+            Console.Write("Y = "); y = Convert.ToDouble(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
             Console.WriteLine(mg(x, y));
             Console.ReadLine();
         }
