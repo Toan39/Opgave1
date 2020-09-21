@@ -1,9 +1,11 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System;
+using System.Globalization;
 
 class OpgaveForm : Form
 {
+    
     TextBox PanelX;
     TextBox PanelY;
     TextBox PanelS;
@@ -11,7 +13,8 @@ class OpgaveForm : Form
     ListBox listBox1;
     Button button1;
     public OpgaveForm()
-    {      
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("en-US", false);
         //PanelX//
 
         PanelX = new TextBox();
@@ -100,11 +103,14 @@ class OpgaveForm : Form
         //button1.Click += this.button1_Click;
         //button1.PerformClick();
 
+        //Mouse//
+        this.MouseClick += new MouseEventHandler(mouse);
+
         //Control//
         this.Size = new Size(800, 500);
-        /*this.Paint += new PaintEventHandler(start);*/  // dit werkt niet iets moet geclicked worden en paint krijg je een repaint en kan niet samen gebruikt worden.
-        this.MouseEnter += new EventHandler(start); //MouseEnter voert het pas uit nadat de muis in de control zit, maar ontstaat loop!
-        this.BackColor = Color.GhostWhite;
+        /*this.Paint += new PaintEventHandler(start);*/// dit werkt niet iets moet geclicked worden en paint krijg je een repaint en kan niet samen gebruikt worden.
+        this.MouseEnter += new EventHandler(start); //MouseEnter voert het pas uit nadat de muis in de control zit, maar ontstaat loop! Dus indeling van code moet goed zijn
+        this.BackColor = Color.GhostWhite;          //pas op als mouse te snel in control zit loopt die vast!
         //start(null, null);
     }
 
@@ -129,17 +135,15 @@ class OpgaveForm : Form
 
     void start(object sender, EventArgs e)
     {
-        
         listBox1.SetSelected(0, true);    //Werkt niet helemaal goed, want laadtijd wordt hoger en de figuur wordt niet ge-paint 
         //if (listBox1.Items.Count > 0)
         //{
         //   listBox1.SetSelected(0, true);
         //}
         //button1.PerformClick();
-        
     }
 
-   void SelectedIndex(object sender, EventArgs e)
+    void SelectedIndex(object sender, EventArgs e)
     {
 
         if (listBox1.SelectedIndex == 0)
@@ -177,13 +181,48 @@ class OpgaveForm : Form
             PanelS.Text = " 0.00015625";
             PanelM.Text = "200";
         }
+        
+        
         this.MouseEnter -= new EventHandler(start);
 
     }
 
+    void mouse(object sender, MouseEventArgs mea)
+    {
+        listBox1.ClearSelected();
+        //Mouse values  determined//
+        double s2 =0.5* Convert.ToDouble(PanelS.Text);   // punt verandert in comma, net zoals het probleem dat input een comma moet hebben.
+        int m2 = Int32.Parse(PanelM.Text);
+        double x2 = mea.Location.X;
+        double y2 = mea.Location.Y;   //Midden is 200, 200, inplaats van 0, Dus om de goede coordinaten te krijg moet beide respectief naar coordinate systeem.
+                                      //reverse mandelbrot lost dat op
+
+        //double x2-s2/((x2 - 200) = MiddenX   ;
+        //double y2-s2/(200 - y2) = MiddenY   ;
+
+        double v1 = x2-s2;
+        double v2 = x2-400;   //kan het korter?
+        double v3 = y2-s2;
+        double v4 = y2+400;
+        
+        double xMouseMid =v1/v2;
+        double yMouseMid =v3/v4;
+            
+        //zooms in//
+        this.reken(xMouseMid, yMouseMid, s2, m2);
+
+        //the new values in the textboxes//
+        string MouseX = xMouseMid.ToString();
+        string MouseY = yMouseMid.ToString();
+        string MouseS = s2.ToString();
+
+        PanelX.Text = MouseX;
+        PanelY.Text = MouseY;
+        PanelS.Text = MouseS;
+    }
 
 
-   void button1_Click(object sender, EventArgs e)
+    void button1_Click(object sender, EventArgs e)
         {
                  //if (String.IsNullOrEmpty(PanelX.Text))
                  //   {
@@ -204,7 +243,7 @@ class OpgaveForm : Form
     void reken( double MiddenX, double MiddenY, double Schaal, int Max)
     {
         Graphics gr = this.CreateGraphics();
-         int n = 1, m = 1;
+        int n = 1, m = 1;
         int mg;
         Pen pen = new Pen(Color.Black, 1);
 
@@ -256,3 +295,4 @@ class HalloWin3
         Application.Run(scherm);
     }
 }
+
