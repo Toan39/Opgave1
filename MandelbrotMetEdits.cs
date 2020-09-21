@@ -1,0 +1,258 @@
+using System.Windows.Forms;
+using System.Drawing;
+using System;
+
+class OpgaveForm : Form
+{
+    TextBox PanelX;
+    TextBox PanelY;
+    TextBox PanelS;
+    TextBox PanelM;
+    ListBox listBox1;
+    Button button1;
+    public OpgaveForm()
+    {      
+        //PanelX//
+
+        PanelX = new TextBox();
+        PanelX.Size = new Size(100, 20);
+        PanelX.Location = new Point(500, 10);
+        this.Controls.Add(PanelX);
+
+        //PanelY//
+
+        PanelY = new TextBox();
+        PanelY.Size = new Size(100, 20);
+        PanelY.Location = new Point(650, 10);
+        this.Controls.Add(PanelY);
+
+        //Schaal//
+
+        PanelS = new TextBox();
+        PanelS.Size = new Size(100, 20);
+        PanelS.Location = new Point(500, 70);
+        this.Controls.Add(PanelS);
+
+        //Max//
+
+        PanelM = new TextBox();
+        PanelM.Size = new Size(100, 20);
+        PanelM.Location = new Point(650, 70);
+        this.Controls.Add(PanelM);
+
+        //Label for Mid X coordinate//
+        Label label1;
+        label1 = new Label();
+        label1.Text = "MidX:";
+        label1.Location = new Point(450, 10);
+        this.Controls.Add(label1);
+
+        //Label for Mid Y coordinate//
+        Label label2;
+        label2 = new Label();
+        label2.Text = "MidY:";
+        label2.Location = new Point(600, 10);
+        this.Controls.Add(label2);
+
+        //Label for Max value//
+        Label label3;
+        label3 = new Label();
+        label3.Text = "Max:";
+        label3.Location = new Point(600, 70);
+        this.Controls.Add(label3);
+
+        //Label for Scale value//
+        Label label4;
+        label4 = new Label();
+        label4.Text = "Schaal:";
+        label4.Location = new Point(450, 70);
+        this.Controls.Add(label4);
+        
+        //Label for voorbeeldenmenu//
+        Label label5;
+        label5 = new Label();
+        label5.Text = "Voorbeelden:";
+        label5.Location = new Point(550, 200);
+        this.Controls.Add(label5);
+
+        //Listbox//
+        listBox1 = new ListBox();
+        listBox1.Location = new Point(650, 200);
+        listBox1.Size = new Size(100, 60);
+        listBox1.BackColor = Color.White;
+        listBox1.ForeColor = Color.Black;
+        listBox1.Items.Add("Basis");
+        listBox1.Items.Add("Regenboog");
+        listBox1.Items.Add("Blauwe plek");
+        listBox1.Items.Add("Gras");
+        this.Controls.Add(listBox1);
+        listBox1.SelectedIndexChanged += new EventHandler(SelectedIndex);
+       
+
+        //Button okay//
+        //Button button1 = new Button();
+        button1 = new Button();
+        button1.Text = "OK";
+        button1.Size = new Size(50, 20);
+        button1.Location = new Point(600, 120);
+        this.Controls.Add(button1);
+        button1.Click += new EventHandler(button1_Click);
+        //button1.Click += this.button1_Click;
+        //button1.PerformClick();
+
+        //Control//
+        this.Size = new Size(800, 500);
+        /*this.Paint += new PaintEventHandler(start);*/  // dit werkt niet iets moet geclicked worden en paint krijg je een repaint en kan niet samen gebruikt worden.
+        this.MouseEnter += new EventHandler(start); //MouseEnter voert het pas uit nadat de muis in de control zit, maar ontstaat loop!
+        this.BackColor = Color.GhostWhite;
+        //start(null, null);
+    }
+
+
+    //void start(object sender, PaintEventArgs pea)
+    //{
+    //    this.button1_Click(sender, pea);    //deze hele methode wordt alleen uitgevoerd voor console functies.
+    //}
+
+    //void call()
+    //{
+    //       if (String.IsNullOrEmpty(PanelX.Text))
+    //        {
+    //            this.reken(0, 0, 0.01, 100);             //deze void roept dus ook de reken methode uit, maar moet het maar 1x doen!
+    //}   
+    //}
+
+    //private void self_click()
+    //{
+    //   button1.PerformClick();          // dit werkt alleen als button 1 eerder is gezet in de code.
+    //}
+
+    void start(object sender, EventArgs e)
+    {
+        
+        listBox1.SetSelected(0, true);    //Werkt niet helemaal goed, want laadtijd wordt hoger en de figuur wordt niet ge-paint 
+        //if (listBox1.Items.Count > 0)
+        //{
+        //   listBox1.SetSelected(0, true);
+        //}
+        //button1.PerformClick();
+        
+    }
+
+   void SelectedIndex(object sender, EventArgs e)
+    {
+
+        if (listBox1.SelectedIndex == 0)
+        {
+            this.reken(0, 0, 0.01, 100);
+            PanelX.Text = "0";
+            PanelY.Text = "0";
+            PanelS.Text = "0.01";
+            PanelM.Text = "100";
+        }
+
+        if (listBox1.SelectedIndex == 1)
+        {
+            this.reken(-0.108625, 0.9014428, 0.000000038147, 400);
+            PanelX.Text = "-0.108625";
+            PanelY.Text = "0.9014428";
+            PanelS.Text = "0.000000038147";
+            PanelM.Text = "400";
+        }
+
+        if (listBox1.SelectedIndex == 2)
+        {
+            this.reken(-1.0079296875, 0.31112109375, 0.00001953125, 3000);
+            PanelX.Text = "-0.108625";
+            PanelY.Text = "0.9014428";
+            PanelS.Text = "0.000000038147";
+            PanelM.Text = "400";
+        }
+
+        if (listBox1.SelectedIndex == 3)
+        {
+            this.reken(-0.1578125, 1.0328125, 0.00015625, 200);
+            PanelX.Text = "-0.15781255";
+            PanelY.Text = "1.0328125";
+            PanelS.Text = " 0.00015625";
+            PanelM.Text = "200";
+        }
+        this.MouseEnter -= new EventHandler(start);
+
+    }
+
+
+
+   void button1_Click(object sender, EventArgs e)
+        {
+                 //if (String.IsNullOrEmpty(PanelX.Text))
+                 //   {
+                //       this.reken( 0, 0, 0.01, 100);          //Als er niks ingevuld werd in PanelX voert het reken-method uit, maar knop moet wel ingedrukt worden.
+                 //   }
+                //else
+             //    {
+                    listBox1.ClearSelected();
+                    double x1 = Convert.ToDouble(PanelX.Text);
+                    double y1 = Convert.ToDouble(PanelY.Text);
+                    double s1 = Convert.ToDouble(PanelS.Text);
+                    int m1 = Int32.Parse(PanelM.Text);
+                    this.reken( x1, y1, s1, m1);
+                 //}
+            
+        }
+
+    void reken( double MiddenX, double MiddenY, double Schaal, int Max)
+    {
+        Graphics gr = this.CreateGraphics();
+         int n = 1, m = 1;
+        int mg;
+        Pen pen = new Pen(Color.Black, 1);
+
+        while (n <= 400)
+        {
+            while (m <= 400)
+            {
+                double X = MiddenX + Schaal * (m - 200);
+                double Y = MiddenY + Schaal * (200 - n);
+                mg = Mandelbrot(X, Y, Max);
+                pen.Color = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32));
+                gr.DrawRectangle(pen, m, n, 1, 1);
+
+
+                m++;
+            }
+            m = 1;
+            n++;
+        }
+    }
+
+   int Mandelbrot(double X, double Y, int Max)
+    {
+
+        double a = 0.0;
+        double b = 0.0;
+        int n = 0;
+        double newA;
+        double newB;
+
+        while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max + 1))
+        {
+            newA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
+            newB = 2.0 * a * b + Y;
+            a = newA;
+            b = newB;
+            n = n + 1;
+        }
+        return n;
+    }
+}
+
+class HalloWin3
+{
+    static void Main()
+    {
+        OpgaveForm scherm;
+        scherm = new OpgaveForm();
+        Application.Run(scherm);
+    }
+}
