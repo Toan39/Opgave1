@@ -200,13 +200,15 @@ class OpgaveForm : Form
         //double x2-s2/((x2 - 200) = MiddenX   ;
         //double y2-s2/(200 - y2) = MiddenY   ;
 
-        double v1 = x2-s2;
-        double v2 = x2-400;   //kan het korter?
-        double v3 = y2-s2;
-        double v4 = y2+400;
-        
-        double xMouseMid =v1/v2;
-        double yMouseMid =v3/v4;
+
+        double vx = x2/s2;   // x  en y coordinate delen door schaal, dit moet een waarde zijn dat het punt in het midden zet. bv. voor 200 krijg je x,y=0,0, dus de waarde zal 1-400 zijn
+        double vy= y2/s2;
+                                 //Mandel
+                 
+        double v1 = x2 / (vx-200 );   //dit zoomt alleen in, formule moet omgeschreven worden.
+        double v3 = y2 / (200-vy);
+        double xMouseMid = v1-s2;
+        double yMouseMid = v3-s2;
             
         //zooms in//
         this.reken(xMouseMid, yMouseMid, s2, m2);
