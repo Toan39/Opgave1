@@ -119,64 +119,63 @@ class OpgaveForm : Form
     }
 
 
-    void VoorbeeldenMenu(object sender, EventArgs e)
+    void VoorbeeldenMenu(object sender, EventArgs e) //Maakt een methode aan voor de ListBox "LijstVB"
     {
 
-        if (LijstVB.SelectedIndex == 0)
-        {
+        if (LijstVB.SelectedIndex == 0)  //Vult de tekstboxes in met de waardes voor de voorbeeld "Basis" als deze optie wordt geselecteerd.
             PaneelX.Text = "0";
             PaneelY.Text = "0";
             PaneelS.Text = "0.01";
             PaneelM.Text = "100";
-            Plaatje.Invalidate();
+            Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
+        {
         }
 
-        if (LijstVB.SelectedIndex == 1)
+        if (LijstVB.SelectedIndex == 1) //Vult de tekstboxes in met de waardes voor de voorbeeld "Regenboog" als deze optie wordt geselecteerd.
         {
             PaneelX.Text = "-0.108625";
             PaneelY.Text = "0.9014428";
             PaneelS.Text = "0.000000038147";
             PaneelM.Text = "400";
-            Plaatje.Invalidate();
+            Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
 
-        if (LijstVB.SelectedIndex == 2)
+        if (LijstVB.SelectedIndex == 2) //Vult de tekstboxes in met de waardes voor de voorbeeld "Blauwe plek" als deze optie wordt geselecteerd.
         {
-            PaneelX.Text = "-1.0079296875";
+            PaneelX.Text = "-1.0079296875"; 
             PaneelY.Text = "0.31112109375";
             PaneelS.Text = "0.00001953125";
             PaneelM.Text = "3000";
-            Plaatje.Invalidate();
+            Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
 
-        if (LijstVB.SelectedIndex == 3)
+        if (LijstVB.SelectedIndex == 3) //Vult de tekstboxes in met de waardes voor de voorbeeld "Gras" als deze optie wordt geselecteerd.
         {
             PaneelX.Text = "-0.15781255";
             PaneelY.Text = "1.0328125";
             PaneelS.Text = " 0.00015625";
             PaneelM.Text = "200";
-            Plaatje.Invalidate();
+            Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
-
-
-
     }
 
     void Muis(object sender, MouseEventArgs mea)
     {
-        LijstVB.ClearSelected();
+        LijstVB.ClearSelected(); // Deselecteert de geselecteerde in de voorbeeldenmenu
 
+        //Converteert de momentele ingevulde X,Y en schaal waardes van een string  naar een double. 
         double MiddenX = Convert.ToDouble(PaneelX.Text), MiddenY = Convert.ToDouble(PaneelY.Text), Schaal = Convert.ToDouble(PaneelS.Text);
 
-        MiddenX = MiddenX + Schaal * (mea.X - 200);
-        MiddenY = MiddenY + Schaal * (200 - mea.Y);
+        MiddenX = MiddenX + Schaal * (mea.X - 200); //Berekent de nieuwe MiddenX-coordinaat uit op basis van de aangeklikte x-positie van de muis
+        MiddenY = MiddenY + Schaal * (200 - mea.Y); //Berekent de nieuwe MiddenY-coordinaat uit op basis van de aangeklikte y-positie van de muis
 
-        PaneelX.Text = Convert.ToString(MiddenX);
+        //Converteert de ingevulde nieuwe MiddenX, MiddenY en Schaal coordinaat naar een string, zodat het daarna in de tekstblokken wordt gezet.
+        PaneelX.Text = Convert.ToString(MiddenX);  
         PaneelY.Text = Convert.ToString(MiddenY);
-        PaneelS.Text = Convert.ToString(Schaal * 0.5);
+        PaneelS.Text = Convert.ToString(Schaal * 0.5); // De Schaal-waarde wordt keer 0.5 gedaan
 
 
-        Plaatje.Invalidate();
+        Plaatje.Invalidate(); //Tekent de nieuwe plaatje met de nieuwe schaal, MiddenX en MiddenY waardes.
     }
 
 
