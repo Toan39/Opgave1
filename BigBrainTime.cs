@@ -6,44 +6,48 @@ using System.Globalization;
 class OpgaveForm : Form
 {
 
-
+    TextBox PaneelX;
+    TextBox PaneelY;
+    TextBox PaneelS;
+    TextBox PaneelM;
+    ListBox LijstVB;
+    Button knopOK;
     Panel Plaatje;
-    TextBox PanelX;
-    TextBox PanelY;
-    TextBox PanelS;
-    TextBox PanelM;
-    ListBox listBox1;
-    Button button1;
+
     public OpgaveForm()
     {
         CultureInfo.CurrentCulture = new CultureInfo("en-US", false);
-        //PanelX//
-        PanelX = new TextBox();
-        PanelX.Text = "0";
-        PanelX.Size = new Size(100, 20);
-        PanelX.Location = new Point(500, 10);
-        this.Controls.Add(PanelX);
+        //Control//
+        this.Size = new Size(800, 500);
+        this.BackColor = Color.GhostWhite;
 
-        //PanelY//
-        PanelY = new TextBox();
-        PanelY.Text = "0";
-        PanelY.Size = new Size(100, 20);
-        PanelY.Location = new Point(650, 10);
-        this.Controls.Add(PanelY);
+        //PaneelX//
+        PaneelX = new TextBox();
+        PaneelX.Text = "0";
+        PaneelX.Size = new Size(100, 20);
+        PaneelX.Location = new Point(500, 10);
+        this.Controls.Add(PaneelX);
+
+        //PaneelY//
+        PaneelY = new TextBox();
+        PaneelY.Text = "0";
+        PaneelY.Size = new Size(100, 20);
+        PaneelY.Location = new Point(650, 10);
+        this.Controls.Add(PaneelY);
 
         //Schaal//
-        PanelS = new TextBox();
-        PanelS.Text = "0.01";
-        PanelS.Size = new Size(100, 20);
-        PanelS.Location = new Point(500, 70);
-        this.Controls.Add(PanelS);
+        PaneelS = new TextBox();
+        PaneelS.Text = "0.01";
+        PaneelS.Size = new Size(100, 20);
+        PaneelS.Location = new Point(500, 70);
+        this.Controls.Add(PaneelS);
 
         //Max//
-        PanelM = new TextBox();
-        PanelM.Text = "100";
-        PanelM.Size = new Size(100, 20);
-        PanelM.Location = new Point(650, 70);
-        this.Controls.Add(PanelM);
+        PaneelM = new TextBox();
+        PaneelM.Text = "100";
+        PaneelM.Size = new Size(100, 20);
+        PaneelM.Location = new Point(650, 70);
+        this.Controls.Add(PaneelM);
 
         //Label for Mid X coordinate//
         Label label1;
@@ -81,86 +85,76 @@ class OpgaveForm : Form
         this.Controls.Add(label5);
 
         //Listbox//
-        listBox1 = new ListBox();
-        listBox1.Location = new Point(650, 200);
-        listBox1.Size = new Size(100, 60);
-        listBox1.BackColor = Color.White;
-        listBox1.ForeColor = Color.Black;
-        listBox1.Items.Add("Basis");
-        listBox1.Items.Add("Regenboog");
-        listBox1.Items.Add("Blauwe plek");
-        listBox1.Items.Add("Gras");
-        this.Controls.Add(listBox1);
-        listBox1.SelectedIndexChanged += new EventHandler(SelectedIndex);
+        LijstVB = new ListBox();
+        LijstVB.Location = new Point(650, 200);
+        LijstVB.Size = new Size(100, 60);
+        LijstVB.BackColor = Color.White;
+        LijstVB.ForeColor = Color.Black;
+        LijstVB.Items.Add("Basis");
+        LijstVB.Items.Add("Regenboog");
+        LijstVB.Items.Add("Blauwe plek");
+        LijstVB.Items.Add("Gras");
+        this.Controls.Add(LijstVB);
+        LijstVB.SelectedIndexChanged += new EventHandler(VoorbeeldenMenu);
 
 
         //Button okay//
-        button1 = new Button();
-        button1.Text = "OK";
-        button1.Size = new Size(50, 20);
-        button1.Location = new Point(600, 120);
-        this.Controls.Add(button1);
-        button1.Click += new EventHandler(button1_Click);
+        knopOK = new Button();
+        knopOK.Text = "OK";
+        knopOK.Size = new Size(50, 20);
+        knopOK.Location = new Point(600, 120);
+        this.Controls.Add(knopOK);
+        knopOK.Click += new EventHandler(knopOK_Click);
 
         //Plaatje van het Mandelbrot//
         Plaatje = new Panel();
         Plaatje.Location = new Point(25, 25);
         Plaatje.Size = new Size(400, 400);
-        Plaatje.Paint += new PaintEventHandler(reken);
+        Plaatje.Paint += new PaintEventHandler(Teken);
         this.Controls.Add(Plaatje);
 
         //Mouse//
-        Plaatje.MouseClick += new MouseEventHandler(mouse);
-
-        //Control//
-        this.Size = new Size(800, 500);
-        this.BackColor = Color.GhostWhite;          //pas op als mouse te snel in control zit loopt die vast!
-    }
-
-
-
-    void start(object sender, EventArgs e)
-    {
-        listBox1.SetSelected(0, true);    //Werkt niet helemaal goed, want laadtijd wordt hoger en de figuur wordt niet ge-paint 
+        Plaatje.MouseClick += new MouseEventHandler(Muis);
 
     }
 
-    void SelectedIndex(object sender, EventArgs e)
+
+    void VoorbeeldenMenu(object sender, EventArgs e)
     {
 
-        if (listBox1.SelectedIndex == 0)
+        if (LijstVB.SelectedIndex == 0)
         {
-            PanelX.Text = "0";
-            PanelY.Text = "0";
-            PanelS.Text = "0.01";
-            PanelM.Text = "100";
+            PaneelX.Text = "0";
+            PaneelY.Text = "0";
+            PaneelS.Text = "0.01";
+            PaneelM.Text = "100";
             Plaatje.Invalidate();
         }
 
-        if (listBox1.SelectedIndex == 1)
+        if (LijstVB.SelectedIndex == 1)
         {
-            PanelX.Text = "-0.108625";
-            PanelY.Text = "0.9014428";
-            PanelS.Text = "0.000000038147";
-            PanelM.Text = "400";
+            PaneelX.Text = "-0.108625";
+            PaneelY.Text = "0.9014428";
+            PaneelS.Text = "0.000000038147";
+            PaneelM.Text = "400";
             Plaatje.Invalidate();
         }
 
-        if (listBox1.SelectedIndex == 2)
+        if (LijstVB.SelectedIndex == 2)
         {
-            PanelX.Text = "-1.0079296875";
-            PanelY.Text = "0.31112109375";
-            PanelS.Text = "0.00001953125";
-            PanelM.Text = "3000";
+            PaneelX.Text = "-1.0079296875";
+            PaneelY.Text = "0.31112109375";
+            PaneelS.Text = "0.00001953125";
+            PaneelM.Text = "3000";
             Plaatje.Invalidate();
         }
 
-        if (listBox1.SelectedIndex == 3)
+        if (LijstVB.SelectedIndex == 3)
         {
-            PanelX.Text = "-0.15781255";
-            PanelY.Text = "1.0328125";
-            PanelS.Text = " 0.00015625";
-            PanelM.Text = "200";
+            PaneelX.Text = "-0.15781255";
+            PaneelY.Text = "1.0328125";
+            PaneelS.Text = " 0.00015625";
+            PaneelM.Text = "200";
             Plaatje.Invalidate();
         }
 
@@ -168,42 +162,42 @@ class OpgaveForm : Form
 
     }
 
-    void mouse(object sender, MouseEventArgs mea)
+    void Muis(object sender, MouseEventArgs mea)
     {
-        listBox1.ClearSelected();
+        LijstVB.ClearSelected();
 
-        double MiddenX = Convert.ToDouble(PanelX.Text), MiddenY = Convert.ToDouble(PanelY.Text), Schaal = Convert.ToDouble(PanelS.Text);
+        double MiddenX = Convert.ToDouble(PaneelX.Text), MiddenY = Convert.ToDouble(PaneelY.Text), Schaal = Convert.ToDouble(PaneelS.Text);
 
         MiddenX = MiddenX + Schaal * (mea.X - 200);
         MiddenY = MiddenY + Schaal * (200 - mea.Y);
 
-        PanelX.Text = Convert.ToString(MiddenX);
-        PanelY.Text = Convert.ToString(MiddenY);
-        PanelS.Text = Convert.ToString(Schaal * 0.5);
+        PaneelX.Text = Convert.ToString(MiddenX);
+        PaneelY.Text = Convert.ToString(MiddenY);
+        PaneelS.Text = Convert.ToString(Schaal * 0.5);
 
 
         Plaatje.Invalidate();
     }
 
 
-    void button1_Click(object obj, EventArgs e)
+    void knopOK_Click(object obj, EventArgs e)
     {
-        listBox1.ClearSelected();
+        LijstVB.ClearSelected();
         Plaatje.Invalidate();
 
     }
 
-    void reken(object sender, PaintEventArgs pea)
+    void Teken(object sender, PaintEventArgs pea)
     {
         Graphics gr = pea.Graphics;
-        int mg, Max = Int32.Parse(PanelM.Text);
+        int mg, Max = Int32.Parse(PaneelM.Text);
         SolidBrush br = new SolidBrush(Color.Black);
-        double MiddenX = Convert.ToDouble(PanelX.Text), MiddenY = Convert.ToDouble(PanelY.Text), Schaal = Convert.ToDouble(PanelS.Text);
-        
+        double MiddenX = Convert.ToDouble(PaneelX.Text), MiddenY = Convert.ToDouble(PaneelY.Text), Schaal = Convert.ToDouble(PaneelS.Text);
+
 
         for (int n = 1; n <= 400; n++)
         {
-            for (int m = 1;  m <= 400; m++)
+            for (int m = 1; m <= 400; m++)
             {
                 double X = MiddenX + Schaal * (m - 200);
                 double Y = MiddenY + Schaal * (200 - n);
@@ -221,15 +215,15 @@ class OpgaveForm : Form
         double a = 0.0;
         double b = 0.0;
         int n = 0;
-        double newA;
-        double newB;
+        double nieuweA;
+        double nieuweB;
 
         while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max))
         {
-            newA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
-            newB = 2.0 * a * b + Y;
-            a = newA;
-            b = newB;
+            nieuweA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
+            nieuweB = 2.0 * a * b + Y;
+            a = nieuweA;
+            b = nieuweB;
             n = n + 1;
         }
         return n;
