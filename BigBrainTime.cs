@@ -18,7 +18,6 @@ class OpgaveForm : Form
     {
         CultureInfo.CurrentCulture = new CultureInfo("en-US", false);
         //PanelX//
-
         PanelX = new TextBox();
         PanelX.Text = "0";
         PanelX.Size = new Size(100, 20);
@@ -26,7 +25,6 @@ class OpgaveForm : Form
         this.Controls.Add(PanelX);
 
         //PanelY//
-
         PanelY = new TextBox();
         PanelY.Text = "0";
         PanelY.Size = new Size(100, 20);
@@ -34,7 +32,6 @@ class OpgaveForm : Form
         this.Controls.Add(PanelY);
 
         //Schaal//
-
         PanelS = new TextBox();
         PanelS.Text = "0.01";
         PanelS.Size = new Size(100, 20);
@@ -42,7 +39,6 @@ class OpgaveForm : Form
         this.Controls.Add(PanelS);
 
         //Max//
-
         PanelM = new TextBox();
         PanelM.Text = "100";
         PanelM.Size = new Size(100, 20);
@@ -99,15 +95,12 @@ class OpgaveForm : Form
 
 
         //Button okay//
-        //Button button1 = new Button();
         button1 = new Button();
         button1.Text = "OK";
         button1.Size = new Size(50, 20);
         button1.Location = new Point(600, 120);
         this.Controls.Add(button1);
         button1.Click += new EventHandler(button1_Click);
-        //button1.Click += this.button1_Click;
-        //button1.PerformClick();
 
         //Plaatje van het Mandelbrot//
         Plaatje = new Panel();
@@ -121,38 +114,15 @@ class OpgaveForm : Form
 
         //Control//
         this.Size = new Size(800, 500);
-        /*this.Paint += new PaintEventHandler(start);*/// dit werkt niet iets moet geclicked worden en paint krijg je een repaint en kan niet samen gebruikt worden.
         this.BackColor = Color.GhostWhite;          //pas op als mouse te snel in control zit loopt die vast!
-        //start(null, null);
     }
 
 
-    //void start(object sender, PaintEventArgs pea)
-    //{
-    //    this.button1_Click(sender, pea);    //deze hele methode wordt alleen uitgevoerd voor console functies.
-    //}
-
-    //void call()
-    //{
-    //       if (String.IsNullOrEmpty(PanelX.Text))
-    //        {
-    //            this.reken(0, 0, 0.01, 100);             //deze void roept dus ook de reken methode uit, maar moet het maar 1x doen!
-    //}   
-    //}
-
-    //private void self_click()
-    //{
-    //   button1.PerformClick();          // dit werkt alleen als button 1 eerder is gezet in de code.
-    //}
 
     void start(object sender, EventArgs e)
     {
         listBox1.SetSelected(0, true);    //Werkt niet helemaal goed, want laadtijd wordt hoger en de figuur wordt niet ge-paint 
-        //if (listBox1.Items.Count > 0)
-        //{
-        //   listBox1.SetSelected(0, true);
-        //}
-        //button1.PerformClick();
+
     }
 
     void SelectedIndex(object sender, EventArgs e)
@@ -173,7 +143,7 @@ class OpgaveForm : Form
             PanelY.Text = "0.9014428";
             PanelS.Text = "0.000000038147";
             PanelM.Text = "400";
-
+            Plaatje.Invalidate();
         }
 
         if (listBox1.SelectedIndex == 2)
@@ -201,78 +171,47 @@ class OpgaveForm : Form
     void mouse(object sender, MouseEventArgs mea)
     {
         listBox1.ClearSelected();
-        //Mouse values  determined//
-        double s2 =0.5* Convert.ToDouble(PanelS.Text);   // punt verandert in comma, net zoals het probleem dat input een comma moet hebben.
-        int m2 = Int32.Parse(PanelM.Text);
-        double x2 = mea.Location.X;
-        double y2 = mea.Location.Y;   //Midden is 200, 200, inplaats van 0, Dus om de goede coordinaten te krijg moet beide respectief naar coordinate systeem.
-                                      //reverse mandelbrot lost dat op
 
-        //double x2-s2/((x2 - 200) = MiddenX   ;
-        //double y2-s2/(200 - y2) = MiddenY   ;
+        double MiddenX = Convert.ToDouble(PanelX.Text), MiddenY = Convert.ToDouble(PanelY.Text), Schaal = Convert.ToDouble(PanelS.Text);
 
+        MiddenX = MiddenX + Schaal * (mea.X - 200);
+        MiddenY = MiddenY + Schaal * (200 - mea.Y);
 
-        double vx = x2/s2;   // x  en y coordinate delen door schaal, dit moet een waarde zijn dat het punt in het midden zet. bv. voor 200 krijg je x,y=0,0, dus de waarde zal 1-400 zijn
-        double vy= y2/s2;
-                                 //Mandel
-                 
-        double v1 = x2 / (vx-200 );   //dit zoomt alleen in, formule moet omgeschreven worden.
-        double v3 = y2 / (200-vy);
-        double xMouseMid = v1-s2;
-        double yMouseMid = v3-s2;
+        PanelX.Text = Convert.ToString(MiddenX);
+        PanelY.Text = Convert.ToString(MiddenY);
+        PanelS.Text = Convert.ToString(Schaal * 0.5);
 
 
-        //the new values in the textboxes//
-        string MouseX = xMouseMid.ToString();
-        string MouseY = yMouseMid.ToString();
-        string MouseS = s2.ToString();
-
-        PanelX.Text = MouseX;
-        PanelY.Text = MouseY;
-        PanelS.Text = MouseS;
-
-        //zooms in//
         Plaatje.Invalidate();
     }
 
 
     void button1_Click(object obj, EventArgs e)
     {
-        //if (String.IsNullOrEmpty(PanelX.Text))
-        //   {
-        //       this.reken( 0, 0, 0.01, 100);          //Als er niks ingevuld werd in PanelX voert het reken-method uit, maar knop moet wel ingedrukt worden.
-        //   }
-        //else
-        //    {
         listBox1.ClearSelected();
         Plaatje.Invalidate();
-        //}
 
     }
 
     void reken(object sender, PaintEventArgs pea)
     {
         Graphics gr = pea.Graphics;
-        int n = 1, m = 1;
-        int mg;
-        Pen pen = new Pen(Color.Black, 1);
+        int mg, Max = Int32.Parse(PanelM.Text);
+        SolidBrush br = new SolidBrush(Color.Black);
         double MiddenX = Convert.ToDouble(PanelX.Text), MiddenY = Convert.ToDouble(PanelY.Text), Schaal = Convert.ToDouble(PanelS.Text);
+        
 
-        while (n <= 400)
+        for (int n = 1; n <= 400; n++)
         {
-            while (m <= 400)
+            for (int m = 1;  m <= 400; m++)
             {
                 double X = MiddenX + Schaal * (m - 200);
                 double Y = MiddenY + Schaal * (200 - n);
-                mg = Mandelbrot(X, Y, Int32.Parse(PanelM.Text));
-                pen.Color = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32));
-                gr.DrawRectangle(pen, m, n, 1, 1);
-
-
-                m++;
+                mg = Mandelbrot(X, Y, Max);
+                if (mg == Max) { br.Color = Color.Black; }
+                else { br.Color = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32)); }
+                gr.FillRectangle(br, m, n, 1, 1);
             }
-            m = 1;
-            n++;
         }
     }
 
@@ -285,7 +224,7 @@ class OpgaveForm : Form
         double newA;
         double newB;
 
-        while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max + 1))
+        while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max))
         {
             newA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
             newB = 2.0 * a * b + Y;
