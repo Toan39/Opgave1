@@ -11,9 +11,12 @@ class OpgaveForm : Form
     TextBox PaneelS;
     TextBox PaneelM;
     ListBox LijstVB;
+    ListBox LijstKL;
     Button knopOK;
     Panel Plaatje;
 
+    //integer die belangrijk is voor de kleurkeuze//
+    int kleur = 1;
 
     public OpgaveForm()
     {
@@ -102,8 +105,19 @@ class OpgaveForm : Form
         LijstVB.Items.Add("Regenboog");
         LijstVB.Items.Add("Blauwe plek");
         LijstVB.Items.Add("Gras");
-        this.Controls.Add(LijstVB);
         LijstVB.SelectedIndexChanged += new EventHandler(VoorbeeldenMenu);
+        this.Controls.Add(LijstVB);
+
+
+        //Lijst van kleureninstellingen//
+        LijstKL = new ListBox();
+        LijstKL.Location = new Point(650, 300);
+        LijstKL.Size = new Size(100, 45);
+        LijstKL.Items.Add("Spectrum");
+        LijstKL.Items.Add("Regenboog");
+        LijstKL.Items.Add("Organisch");
+        LijstKL.SelectedIndexChanged += new EventHandler(KleurenMenu);
+        this.Controls.Add(LijstKL);
 
         //Bij het indrukken van de OK-knop worden de ingevoerde variabelen bevestigd en wordt een nieuw plaatje getekent
         //OK-knop//
@@ -132,10 +146,10 @@ class OpgaveForm : Form
 
         if (LijstVB.SelectedIndex == 0)  //Vult de tekstboxes in met de waardes voor de voorbeeld "Basis" als deze optie wordt geselecteerd.
             PaneelX.Text = "0";
-            PaneelY.Text = "0";
-            PaneelS.Text = "0.01";
-            PaneelM.Text = "100";
-            Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
+        PaneelY.Text = "0";
+        PaneelS.Text = "0.01";
+        PaneelM.Text = "100";
+        Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         {
         }
 
@@ -150,7 +164,7 @@ class OpgaveForm : Form
 
         if (LijstVB.SelectedIndex == 2) //Vult de tekstboxes in met de waardes voor de voorbeeld "Blauwe plek" als deze optie wordt geselecteerd.
         {
-            PaneelX.Text = "-1.0079296875"; 
+            PaneelX.Text = "-1.0079296875";
             PaneelY.Text = "0.31112109375";
             PaneelS.Text = "0.00001953125";
             PaneelM.Text = "3000";
@@ -178,7 +192,7 @@ class OpgaveForm : Form
         MiddenY = MiddenY + Schaal * (200 - mea.Y); //Berekent de nieuwe MiddenY-coordinaat uit op basis van de aangeklikte y-positie van de muis
 
         //Converteert de ingevulde nieuwe MiddenX, MiddenY en Schaal coordinaat naar een string, zodat het daarna in de tekstblokken wordt gezet.
-        PaneelX.Text = Convert.ToString(MiddenX);  
+        PaneelX.Text = Convert.ToString(MiddenX);
         PaneelY.Text = Convert.ToString(MiddenY);
         PaneelS.Text = Convert.ToString(Schaal * 0.5); // De Schaal-waarde wordt keer 0.5 gedaan
 
@@ -210,10 +224,12 @@ class OpgaveForm : Form
                 double Y = MiddenY + Schaal * (200 - n);
                 mg = Mandelbrot(X, Y, Max);
                 if (mg == Max) { br.Color = Color.Black; }
-                else { br.Color = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32)); }
+                else { br.Color = KleurKeuze(kleur, mg); }
                 gr.FillRectangle(br, m, n, 1, 1);
             }
         }
+
+
     }
 
     int Mandelbrot(double X, double Y, int Max)
@@ -234,6 +250,49 @@ class OpgaveForm : Form
             n = n + 1;
         }
         return n;
+    }
+
+    void KleurenMenu(object sender, EventArgs ea)
+    {
+        if (LijstKL.SelectedIndex == 0)
+        {
+            kleur = 1;
+            Plaatje.Invalidate();
+        }
+        if (LijstKL.SelectedIndex == 1) 
+        {
+            kleur = 2;
+            Plaatje.Invalidate();
+        }
+        if (LijstKL.SelectedIndex == 2)
+        {
+            kleur = 3;
+            Plaatje.Invalidate();
+        }
+    }
+
+    Color KleurKeuze(int k, int mg)
+    {
+        Color Kleur = new Color();
+        switch (k)
+        {
+            case 1: Kleur = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32)); break;
+            case 2:
+                switch (mg % 7)
+                {
+                    case 0: Kleur = Color.Red; break;
+                    case 1: Kleur = Color.Orange; break;
+                    case 2: Kleur = Color.Yellow; break;
+                    case 3: Kleur = Color.Green; break;
+                    case 4: Kleur = Color.Blue; break;
+                    case 5: Kleur = Color.Purple; break;
+                    case 6: Kleur = Color.Violet; break;
+                }
+                break;
+            case 3: Kleur = Color.FromArgb(127 / (mg % 8 + 1), 63 + 16 * (mg % 5), 64); break;
+        }
+
+        return Kleur;
     }
 }
 
