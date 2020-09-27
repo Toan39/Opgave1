@@ -244,10 +244,10 @@ class OpgaveForm : Form
         while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max))
         {
             nieuweA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
-            nieuweB = 2.0 * a * b + Y;
+            nieuweB = 2 * a * b + Y;
             a = nieuweA;
             b = nieuweB;
-            n = n + 1;
+            n++;
         }
         return n;
     }
@@ -285,7 +285,7 @@ class OpgaveForm : Form
                     case 2: Kleur = Color.Yellow; break;
                     case 3: Kleur = Color.Green; break;
                     case 4: Kleur = Color.Blue; break;
-                    case 5: Kleur = Color.Purple; break;
+                    case 5: Kleur = Color.Indigo; break;
                     case 6: Kleur = Color.Violet; break;
                 }
                 break;
