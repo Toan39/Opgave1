@@ -190,7 +190,7 @@ class OpgaveForm : Form
             Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
     }
-    //Maakt een methode aan voor wanneer er met de muis wordt geklikt.
+    //Wanneer met de muis wordt geklikt op het plaatje, dan wordt er ingezoomed op het plaatje met de aangeklikte geplek als midden.
     void Muis(object sender, MouseEventArgs mea)
     {
         LijstVB.ClearSelected(); // Deselecteert de geselecteerde in de voorbeeldenmenu
