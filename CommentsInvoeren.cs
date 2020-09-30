@@ -146,8 +146,8 @@ class OpgaveForm : Form
 
     }
 
-
-    void VoorbeeldenMenu(object sender, EventArgs e) //Maakt een methode aan voor de ListBox "LijstVB"
+    //Maakt een methode aan voor de ListBox "LijstVB"
+    void VoorbeeldenMenu(object sender, EventArgs e) 
     {
 
         if (LijstVB.SelectedIndex == 0)  //Vult de tekstboxes in met de waardes voor de voorbeeld "Basis" als deze optie wordt geselecteerd.
@@ -186,8 +186,8 @@ class OpgaveForm : Form
             Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
     }
-
-    void Muis(object sender, MouseEventArgs mea)
+    //Maakt een methode aan voor wanneer er met de muis wordt geklikt.
+    void Muis(object sender, MouseEventArgs mea) 
     {
         LijstVB.ClearSelected(); // Deselecteert de geselecteerde in de voorbeeldenmenu
 
@@ -202,19 +202,19 @@ class OpgaveForm : Form
         //Converteert de ingevulde nieuwe MiddenX, MiddenY en Schaal coordinaat naar een string, zodat het daarna in de tekstblokken wordt gezet.
         PaneelX.Text = Convert.ToString(MiddenX);
         PaneelY.Text = Convert.ToString(MiddenY);
-        PaneelS.Text = Convert.ToString(Schaal * 0.5); // De Schaal-waarde wordt keer 0.5 gedaan
-
+        PaneelS.Text = Convert.ToString(Schaal * 0.5); 
 
         Plaatje.Invalidate(); //Tekent de nieuwe plaatje met de nieuwe schaal, MiddenX en MiddenY waardes.
     }
 
-
+    //Wanneer op "oke" knop wordt geklikt wordt het plaatje opnieuw getekent met de ingevulde waardes.
     void knopOK_Click(object obj, EventArgs e)
     {
         LijstVB.ClearSelected();
         Plaatje.Invalidate();
     }
 
+    //Methode dat het mandelbrot-plaatje tekent
     void Teken(object sender, PaintEventArgs pea)
     {
         Graphics gr = pea.Graphics;
@@ -222,14 +222,14 @@ class OpgaveForm : Form
         SolidBrush br = new SolidBrush(Color.Black);
         double MiddenX = Convert.ToDouble(PaneelX.Text), MiddenY = Convert.ToDouble(PaneelY.Text), Schaal = Convert.ToDouble(PaneelS.Text);
 
-
+        //Tekent elke pixel met een kleur gebaseerd op de uitgerekende mandelgetal.
         for (int n = 1; n <= 400; n++)
         {
             for (int m = 1; m <= 400; m++)
             {
                 double X = MiddenX + Schaal * (m - 200);
                 double Y = MiddenY + Schaal * (200 - n);
-                mg = Mandelbrot(X, Y, Max);
+                mg = Mandelbrot(X, Y, Max);       //Roept de methode aan dat de mandelbrot getal uitrekend.
                 if (mg == Max) { br.Color = Color.Black; }
                 else { br.Color = KleurKeuze(kleur, mg); }
                 gr.FillRectangle(br, m, n, 1, 1);
@@ -239,6 +239,7 @@ class OpgaveForm : Form
 
     }
 
+    //Dit is de methode dat het mandelbrot getal uitrekent. 
     int Mandelbrot(double X, double Y, int Max)
     {
 
@@ -248,11 +249,13 @@ class OpgaveForm : Form
         double nieuweA;
         double nieuweB;
 
+        //Wiskundige formule voor de mandelbrot getal.
+        //NieuweA en NieuweB zijn er zodat de nieuweB niet gelijk wordt ge-update.
         while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max))
         {
             nieuweA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
             nieuweB = 2 * a * b + Y;
-            a = nieuweA;
+            a = nieuweA; 
             b = nieuweB;
             n++;
         }
