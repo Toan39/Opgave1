@@ -15,7 +15,7 @@ class OpgaveForm : Form
     Button knopOK;
     Panel Plaatje;
 
-    //integer die belangrijk is voor de kleurkeuze//
+    //integer die belangrijk is voor de kleurkeuze, deze wordt door een listbox aangepast en in een methode gebruikt om de kleur te kiezen//
     int kleur = 1;
 
     public OpgaveForm()
@@ -206,7 +206,6 @@ class OpgaveForm : Form
     {
         LijstVB.ClearSelected();
         Plaatje.Invalidate();
-
     }
 
     void Teken(object sender, PaintEventArgs pea)
