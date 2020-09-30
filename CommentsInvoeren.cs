@@ -16,7 +16,7 @@ class OpgaveForm : Form
     Panel Plaatje;
 
     //integer die belangrijk is voor de kleurkeuze, deze wordt door een listbox aangepast en in een methode gebruikt om de kleur te kiezen//
-    int kleur = 0;
+    int kleur;
 
     public OpgaveForm()
     {
@@ -29,28 +29,28 @@ class OpgaveForm : Form
         this.BackColor = Color.GhostWhite;
 
         //Maakt voor alle in te voegen variabelen een soort invoerpaneel aan in de vorm van TextBoxes
-
+        ////
         //PaneelX//
         PaneelX = new TextBox();
         PaneelX.Text = "0";
         PaneelX.Size = new Size(100, 20);
         PaneelX.Location = new Point(500, 10);
         this.Controls.Add(PaneelX);
-
+        ////
         //PaneelY//
         PaneelY = new TextBox();
         PaneelY.Text = "0";
         PaneelY.Size = new Size(100, 20);
         PaneelY.Location = new Point(650, 10);
         this.Controls.Add(PaneelY);
-
+        ////
         //PaneelSchaal//
         PaneelS = new TextBox();
         PaneelS.Text = "0.01";
         PaneelS.Size = new Size(100, 20);
         PaneelS.Location = new Point(500, 70);
         this.Controls.Add(PaneelS);
-
+        ////
         //PaneelMax//
         PaneelM = new TextBox();
         PaneelM.Text = "100";
@@ -59,42 +59,42 @@ class OpgaveForm : Form
         this.Controls.Add(PaneelM);
 
         //Om duidelijk te maken waar de TextBoxes voor staan, worden er de volgende Labels aan toegevoegd:
-
+        ////
         //Label voor MiddenX//
         Label label1;
         label1 = new Label();
         label1.Text = "Midden X:";
         label1.Location = new Point(450, 10);
         this.Controls.Add(label1);
-
+        ////
         //Label voor MiddenY//
         Label label2;
         label2 = new Label();
         label2.Text = "Midden Y:";
         label2.Location = new Point(600, 10);
         this.Controls.Add(label2);
-
+        ////
         //Label voor Max//
         Label label3;
         label3 = new Label();
         label3.Text = "Max:";
         label3.Location = new Point(600, 70);
         this.Controls.Add(label3);
-
+        ////
         //Label voor de Schaal//
         Label label4;
         label4 = new Label();
         label4.Text = "Schaal:";
         label4.Location = new Point(450, 70);
         this.Controls.Add(label4);
-
+        ////
         //Label voor de lijst met voorbeelden//
         Label label5;
         label5 = new Label();
         label5.Text = "Voorbeelden:";
         label5.Location = new Point(550, 200);
         this.Controls.Add(label5);
-
+        ////
         //Label voor de KleurenLijst//
         Label label6;
         label6 = new Label();
@@ -125,7 +125,7 @@ class OpgaveForm : Form
         LijstKL.SelectedIndexChanged += new EventHandler(KleurenMenu);
         this.Controls.Add(LijstKL);
 
-        //Bij het indrukken van de OK-knop worden de ingevoerde variabelen bevestigd en wordt een nieuw plaatje getekent
+        
         //OK-knop//
         knopOK = new Button();
         knopOK.Text = "OK";
@@ -207,7 +207,7 @@ class OpgaveForm : Form
         Plaatje.Invalidate(); //Tekent de nieuwe plaatje met de nieuwe schaal, MiddenX en MiddenY waardes.
     }
 
-    //Wanneer op "oke" knop wordt geklikt wordt het plaatje opnieuw getekent met de ingevulde waardes.
+    //Bij het indrukken van de OK-knop worden de ingevoerde variabelen bevestigd en wordt een nieuw plaatje getekent.
     void knopOK_Click(object obj, EventArgs e)
     {
         LijstVB.ClearSelected();
@@ -266,7 +266,8 @@ class OpgaveForm : Form
         Plaatje.Invalidate();
     }
 
-    Color KleurKeuze(int k, int mg) //methode die de kleur van de 'geselecteerde' pixel in Teken() bepaalt
+    //methode die de kleur van de 'geselecteerde' pixel in Teken() bepaalt
+    Color KleurKeuze(int k, int mg) 
     {
         Color Kleur = new Color();
         switch (k)
@@ -284,7 +285,7 @@ class OpgaveForm : Form
                     case 6: Kleur = Color.Violet; break;
                 } //'mg%' heeft een waarde tussen 0 en 6, de kleurenkeuze gaat dus alle 7 kleuren van de regenboog af
                 break;
-            case 2: Kleur = Color.FromArgb(127 / (mg % 8 + 1), 63 + 16 * (mg % 5), 64); break; //heeft een variabele rode en groene waarde, geeft verschillende bruine/groene tinten
+            case 2: Kleur = Color.FromArgb(127 / (mg % 8 + 1), 63 + 16 * (mg % 5), 64); break; //heeft een variabele rode en groene waarde; geeft verschillende bruine/groene tinten
         }
 
         return Kleur;
@@ -293,7 +294,7 @@ class OpgaveForm : Form
 
 class HalloWin3
 {
-    static void Main() //main void, wordt dus als eerste uitgevoerd, start 'OpgaveForm', wat het interactieve scherm is
+    static void Main() //main void, wordt dus als eerste uitgevoerd, start 'OpgaveForm', wat het interactieve scherm is.
     {
         OpgaveForm scherm;
         scherm = new OpgaveForm();
