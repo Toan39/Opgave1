@@ -150,7 +150,8 @@ class OpgaveForm : Form
     void VoorbeeldenMenu(object sender, EventArgs e)
     {
 
-        if (LijstVB.SelectedIndex == 0)  //Vult de tekstboxes in met de waardes voor de voorbeeld "Basis" als deze optie wordt geselecteerd.
+        //Vult de tekstboxes in met de waardes voor de voorbeeld "Basis" als deze optie wordt geselecteerd.
+        if (LijstVB.SelectedIndex == 0)  
             PaneelX.Text = "0";
         PaneelY.Text = "0";
         PaneelS.Text = "0.01";
@@ -159,7 +160,8 @@ class OpgaveForm : Form
         {
         }
 
-        if (LijstVB.SelectedIndex == 1) //Vult de tekstboxes in met de waardes voor de voorbeeld "Regenboog" als deze optie wordt geselecteerd.
+        //Vult de tekstboxes in met de waardes voor de voorbeeld "Takken" als deze optie wordt geselecteerd.
+        if (LijstVB.SelectedIndex == 1) 
         {
             PaneelX.Text = "-0.108625";
             PaneelY.Text = "0.9014428";
@@ -168,7 +170,8 @@ class OpgaveForm : Form
             Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
 
-        if (LijstVB.SelectedIndex == 2) //Vult de tekstboxes in met de waardes voor de voorbeeld "Blauwe plek" als deze optie wordt geselecteerd.
+        //Vult de tekstboxes in met de waardes voor de voorbeeld "Kleine Mandelbrot" als deze optie wordt geselecteerd.
+        if (LijstVB.SelectedIndex == 2) 
         {
             PaneelX.Text = "-1.0079296875";
             PaneelY.Text = "0.31112109375";
@@ -177,7 +180,8 @@ class OpgaveForm : Form
             Plaatje.Invalidate(); // Tekent het bijbehorende plaatje als de if-statement is voldaan.
         }
 
-        if (LijstVB.SelectedIndex == 3) //Vult de tekstboxes in met de waardes voor de voorbeeld "Gras" als deze optie wordt geselecteerd.
+        //Vult de tekstboxes in met de waardes voor de voorbeeld "Scheuren" als deze optie wordt geselecteerd.
+        if (LijstVB.SelectedIndex == 3) 
         {
             PaneelX.Text = "-0.15781255";
             PaneelY.Text = "1.0328125";
