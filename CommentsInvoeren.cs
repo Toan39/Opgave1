@@ -264,7 +264,8 @@ class OpgaveForm : Form
         return n;
     }
 
-    void KleurenMenu(object sender, EventArgs ea) //methode voor de listbox van kleureninstellingen
+    //methode voor de listbox van kleureninstellingen
+    void KleurenMenu(object sender, EventArgs ea) 
     {
         kleur = LijstKL.SelectedIndex;
         Plaatje.Invalidate();
