@@ -187,10 +187,10 @@ class OpgaveForm : Form
         //Converteert de momentele ingevulde X,Y en schaal waardes van een string  naar een double. 
         double MiddenX = Convert.ToDouble(PaneelX.Text), MiddenY = Convert.ToDouble(PaneelY.Text), Schaal = Convert.ToDouble(PaneelS.Text);
 
+        //Berekent de nieuwe MiddenX en MiddenY-coordinaat uit op basis van de aangeklikte x en y-positie van de muis
         //(x,y) = (0,0) staat in een assenstelsel linksonderin, maar in en Panel/Window staat deze linksbovenin, dus wat er tussen de haakjes staat is omgedraaid bij Y.
-        MiddenX = MiddenX + Schaal * (mea.X - 200); //Berekent de nieuwe MiddenX-coordinaat uit op basis van de aangeklikte x-positie van de muis
-        MiddenY = MiddenY + Schaal * (200 - mea.Y); //Berekent de nieuwe MiddenY-coordinaat uit op basis van de aangeklikte y-positie van de muis
-       
+        MiddenX = MiddenX + Schaal * (mea.X - 200); 
+        MiddenY = MiddenY + Schaal * (200 - mea.Y); 
 
         //Converteert de ingevulde nieuwe MiddenX, MiddenY en Schaal coordinaat naar een string, zodat het daarna in de tekstblokken wordt gezet.
         PaneelX.Text = Convert.ToString(MiddenX);
