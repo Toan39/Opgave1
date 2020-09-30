@@ -95,6 +95,13 @@ class OpgaveForm : Form
         label5.Location = new Point(550, 200);
         this.Controls.Add(label5);
 
+        //Label voor de KleurenLijst//
+        Label label6;
+        label6 = new Label();
+        label6.Text = "Kleurinstellingen:";
+        label6.Location = new Point(550, 300);
+        this.Controls.Add(label6);
+
         //Lijst van de gegeven voorbeelden//
         LijstVB = new ListBox();
         LijstVB.Location = new Point(650, 200);
@@ -108,7 +115,7 @@ class OpgaveForm : Form
         LijstVB.SelectedIndexChanged += new EventHandler(VoorbeeldenMenu);
         this.Controls.Add(LijstVB);
 
-        //Lijst van kleureninstellingen//
+        //Lijst van kleurinstellingen//
         LijstKL = new ListBox();
         LijstKL.Location = new Point(650, 300);
         LijstKL.Size = new Size(100, 45);
@@ -189,8 +196,8 @@ class OpgaveForm : Form
 
         //Berekent de nieuwe MiddenX en MiddenY-coordinaat uit op basis van de aangeklikte x en y-positie van de muis
         //(x,y) = (0,0) staat in een assenstelsel linksonderin, maar in en Panel/Window staat deze linksbovenin, dus wat er tussen de haakjes staat is omgedraaid bij Y.
-        MiddenX = MiddenX + Schaal * (mea.X - 200); 
-        MiddenY = MiddenY + Schaal * (200 - mea.Y); 
+        MiddenX = MiddenX + Schaal * (mea.X - 200);
+        MiddenY = MiddenY + Schaal * (200 - mea.Y);
 
         //Converteert de ingevulde nieuwe MiddenX, MiddenY en Schaal coordinaat naar een string, zodat het daarna in de tekstblokken wordt gezet.
         PaneelX.Text = Convert.ToString(MiddenX);
