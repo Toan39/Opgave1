@@ -109,9 +109,9 @@ class OpgaveForm : Form
         LijstVB.BackColor = Color.White;
         LijstVB.ForeColor = Color.Black;
         LijstVB.Items.Add("Basis");
-        LijstVB.Items.Add("Regenboog");
-        LijstVB.Items.Add("Blauwe plek");
-        LijstVB.Items.Add("Gras");
+        LijstVB.Items.Add("Takken");
+        LijstVB.Items.Add("Kleine Mandelbrot");
+        LijstVB.Items.Add("Scheuren");
         LijstVB.SelectedIndexChanged += new EventHandler(VoorbeeldenMenu);
         this.Controls.Add(LijstVB);
 
