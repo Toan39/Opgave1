@@ -16,7 +16,7 @@ class OpgaveForm : Form
     Panel Plaatje;
 
     //integer die belangrijk is voor de kleurkeuze, deze wordt door een listbox aangepast en in een methode gebruikt om de kleur te kiezen//
-    int kleur = 1;
+    int kleur = 0;
 
     public OpgaveForm()
     {
@@ -147,7 +147,7 @@ class OpgaveForm : Form
     }
 
     //Maakt een methode aan voor de ListBox "LijstVB"
-    void VoorbeeldenMenu(object sender, EventArgs e) 
+    void VoorbeeldenMenu(object sender, EventArgs e)
     {
 
         if (LijstVB.SelectedIndex == 0)  //Vult de tekstboxes in met de waardes voor de voorbeeld "Basis" als deze optie wordt geselecteerd.
@@ -187,7 +187,7 @@ class OpgaveForm : Form
         }
     }
     //Maakt een methode aan voor wanneer er met de muis wordt geklikt.
-    void Muis(object sender, MouseEventArgs mea) 
+    void Muis(object sender, MouseEventArgs mea)
     {
         LijstVB.ClearSelected(); // Deselecteert de geselecteerde in de voorbeeldenmenu
 
@@ -202,7 +202,7 @@ class OpgaveForm : Form
         //Converteert de ingevulde nieuwe MiddenX, MiddenY en Schaal coordinaat naar een string, zodat het daarna in de tekstblokken wordt gezet.
         PaneelX.Text = Convert.ToString(MiddenX);
         PaneelY.Text = Convert.ToString(MiddenY);
-        PaneelS.Text = Convert.ToString(Schaal * 0.5); 
+        PaneelS.Text = Convert.ToString(Schaal * 0.5);
 
         Plaatje.Invalidate(); //Tekent de nieuwe plaatje met de nieuwe schaal, MiddenX en MiddenY waardes.
     }
@@ -247,47 +247,32 @@ class OpgaveForm : Form
         double b = 0.0;
         int n = 0;
         double nieuweA;
-        double nieuweB;
 
         //Wiskundige formule voor de mandelbrot getal.
-        //NieuweA en NieuweB zijn er zodat de nieuweB niet gelijk wordt ge-update.
+        //NieuweA is er zodat de oude a nog wordt gebruikt in het berekenen van b
         while ((Math.Pow(a, 2) + Math.Pow(b, 2) <= 4.0) && (n < Max))
         {
             nieuweA = Math.Pow(a, 2) - Math.Pow(b, 2) + X;
-            nieuweB = 2 * a * b + Y;
-            a = nieuweA; 
-            b = nieuweB;
+            b = 2 * a * b + Y;
+            a = nieuweA;
             n++;
         }
         return n;
     }
 
-    void KleurenMenu(object sender, EventArgs ea)
+    void KleurenMenu(object sender, EventArgs ea) //methode voor de listbox van kleureninstellingen
     {
-        if (LijstKL.SelectedIndex == 0)
-        {
-            kleur = 1;
-            Plaatje.Invalidate();
-        }
-        if (LijstKL.SelectedIndex == 1)
-        {
-            kleur = 2;
-            Plaatje.Invalidate();
-        }
-        if (LijstKL.SelectedIndex == 2)
-        {
-            kleur = 3;
-            Plaatje.Invalidate();
-        }
+        kleur = LijstKL.SelectedIndex;
+        Plaatje.Invalidate();
     }
 
-    Color KleurKeuze(int k, int mg)
+    Color KleurKeuze(int k, int mg) //methode die de kleur van de 'geselecteerde' pixel in Teken() bepaalt
     {
         Color Kleur = new Color();
         switch (k)
         {
-            case 1: Kleur = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32)); break;
-            case 2:
+            case 0: Kleur = Color.FromArgb(32 * (mg % 8), 16 * (mg % 16), 8 * (mg % 32)); break; //gaat veel verschillende kleuren af per 32 waarden van het mandelgetal
+            case 1:
                 switch (mg % 7)
                 {
                     case 0: Kleur = Color.Red; break;
@@ -297,9 +282,9 @@ class OpgaveForm : Form
                     case 4: Kleur = Color.Blue; break;
                     case 5: Kleur = Color.Indigo; break;
                     case 6: Kleur = Color.Violet; break;
-                }
+                } //'mg%' heeft een waarde tussen 0 en 6, de kleurenkeuze gaat dus alle 7 kleuren van de regenboog af
                 break;
-            case 3: Kleur = Color.FromArgb(127 / (mg % 8 + 1), 63 + 16 * (mg % 5), 64); break;
+            case 2: Kleur = Color.FromArgb(127 / (mg % 8 + 1), 63 + 16 * (mg % 5), 64); break; //heeft een variabele rode en groene waarde, geeft verschillende bruine/groene tinten
         }
 
         return Kleur;
@@ -308,11 +293,10 @@ class OpgaveForm : Form
 
 class HalloWin3
 {
-    static void Main()
+    static void Main() //main void, wordt dus als eerste uitgevoerd, start 'OpgaveForm', wat het interactieve scherm is
     {
         OpgaveForm scherm;
         scherm = new OpgaveForm();
         Application.Run(scherm);
     }
 }
-
