@@ -2,29 +2,30 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Permissions;
 
 namespace CirkelKlikker
 {
     class CirkelKlikker : Form
     {
         const int lengte = 6, breedte = 6;
-        const int maxAantal = 100;
         const int diameter = 29;
-        const int straal = diameter / 2;
         int[,] k, kl;
-        int[] xs, ys;
+        bool[] insarray, waar;
+        bool[,] leg;
+        private int kleur = 1;
         private int x;
         private int y;
-        private int aantal;
         Panel Speelbord;
+        TextBox hallo;
         public CirkelKlikker()
         {
             this.Size = new Size(300, 300);
-            this.xs = new int[maxAantal];
-            this.ys = new int[maxAantal];
             this.k = new int[breedte, lengte];
             this.kl = new int[breedte, lengte];
-            this.aantal = 0;
+            this.leg = new bool[breedte, lengte];
+            this.insarray = new bool[8];
             this.x = 0;
             this.y = 0;
             this.Text = "CirkelKlikker";
@@ -40,6 +41,16 @@ namespace CirkelKlikker
             Speelbord.MouseClick += klik;
             this.Controls.Add(Speelbord);
 
+            hallo = new TextBox() { Size = new Size(30, 20), Location = new Point(20, 250)};
+            this.Controls.Add(hallo);
+
+            k[breedte / 2, lengte / 2] = 1; kl[breedte / 2, lengte / 2] = 1;
+            k[breedte / 2 - 1, lengte / 2] = 1; kl[breedte / 2 - 1, lengte / 2] = 2;
+            k[breedte / 2, lengte / 2 - 1] = 1; kl[breedte / 2, lengte / 2 - 1] = 2;
+            k[breedte / 2 - 1, lengte / 2 - 1] = 1; kl[breedte / 2 - 1, lengte / 2 - 1] = 1;
+
+            legaal(kleur);
+
             // for loop voor maken van x * y panels.
             //for (int t = 0; t < 6; t++)
             //{
@@ -54,33 +65,137 @@ namespace CirkelKlikker
             //}
 
         }
+
         public void klik(object sender, MouseEventArgs mea)
         {
             x = mea.X / 33;
             y = mea.Y / 33;
 
-            if (legaal(x, y))
+            if (leg[x, y])
             {
-                if (this.aantal < maxAantal)
+                this.veranderkleur(x, y, kleur);
+                this.kleur = 3 - kleur;
+            }
+
+            legaal(kleur);
+        }
+
+        public void legaal(int kleur)
+        {
+            for(int t = 0; t < breedte; t++)
+            {
+                for(int u = 0; u < lengte; u++)
                 {
-                    kl[x, y] = (aantal % 2) + 1;
-                    xs[x] = mea.X / 33 * 33 + 16;
-                    ys[y] = mea.Y / 33 * 33 + 16;
-                    this.Invalidate();
-                    this.aantal++;
+                    leg[t, u] = richtingen(t, u, kleur);
                 }
             }
         }
 
-        public bool legaal(int x, int y)
+        //public bool richtingen(int x, int y, int kleur)
+        //{
+        //    if (kl[x, y] > 0) return false;
+        //    int andere = 3 - kleur;
+
+        //    // checkt of het geklikte vakje niet aan rand van het bord zit en of het een andere steen kan insluiten
+        //    if (y > 2 && kl[x, y - 1] == andere && kl[x, y - 2] == kleur) return true; // naar boven
+        //    if (y > 2 && x < breedte - 3 && kl[x + 1, y - 1] == andere && kl[x + 2, y - 2] == kleur) return true; // naar rechtsboven
+        //    if (x < breedte - 3 && kl[x + 1, y] == andere && kl[x + 2, y] == kleur) return true; // naar rechts
+        //    if (y < lengte - 3 && x < breedte - 3 && kl[x + 1, y + 1] == andere && kl[x + 2, y + 2] == kleur) return true; // naar rechtsonder
+        //    if (y < lengte - 3 && kl[x, y + 1] == andere && kl[x, y + 2] == kleur) return true; // naar onder
+        //    if (y < lengte - 3 && x > 2 && kl[x - 1, y + 1] == andere && kl[x - 2, y + 2] == kleur) return true; // naar linksonder
+        //    if (x > 2 && kl[x - 1, y] == andere && kl[x - 2, y] == kleur) return true; // naar links
+        //    if (y > 2 && x > 2 && kl[x - 1, y - 1] == andere && kl[x - 2, y - 2] == kleur) return true; // naar linksboven
+        //    return false;
+        //}
+        //public void veranderkleur(int x, int y, int kleur)
+        //{
+        //    int andere = 3 - kleur;
+        //    kl[x, y] = kleur;
+
+        //    if (y > 2                             && kl[x, y - 1] == andere     && kl[x, y - 2] == kleur)       kl[x, y -1] = kleur; // naar boven
+        //    if (y > 2 && x < breedte - 3          && kl[x + 1, y - 1] == andere && kl[x + 2, y - 2] == kleur)   kl[x+ 1, y - 1] = kleur; // naar rechtsboven
+        //    if (x < breedte - 3                   && kl[x + 1, y] == andere     && kl[x + 2, y] == kleur)       kl[x + 1, y] = kleur; // naar rechts
+        //    if (y < lengte - 3 && x < breedte - 3 && kl[x + 1, y + 1] == andere && kl[x + 2, y + 2] == kleur)   kl[x + 1, y + 1] = kleur; // naar rechtsonder
+        //    if (y < lengte - 3                    && kl[x, y + 1] == andere     && kl[x, y + 2] == kleur)       kl[x, y + 1] = kleur; // naar onder
+        //    if (y < lengte - 3 && x > 2           && kl[x - 1, y + 1] == andere && kl[x - 2, y + 2] == kleur)   kl[x - 1, y + 1] = kleur; // naar linksonder
+        //    if (x > 2                             && kl[x - 1, y] == andere     && kl[x - 2, y] == kleur)       kl[x - 1, y] = kleur; // naar links
+        //    if (y > 2 && x > 2                    && kl[x - 1, y - 1] == andere && kl[x - 2, y - 2] == kleur)   kl[x - 1, y - 1] = kleur; // naar linksboven
+        //}
+
+        bool richtingen(int x, int y, int kleur)
         {
-            if (k[x, y] != 1)
+            if (kl[x, y] > 0) return false;
+
+            // checkt of het geklikte vakje niet aan rand van het bord zit en of het een andere steen kan 
+           
+            this.insarray[0] = insluiten(x, y, kleur, 0, -1);
+            this.insarray[1] = insluiten(x, y, kleur, -1, -1);
+            this.insarray[2] = insluiten(x, y, kleur, -1, 0);
+            this.insarray[3] = insluiten(x, y, kleur, -1, 1);
+            this.insarray[4] = insluiten(x, y, kleur, 0, 1);
+            this.insarray[5] = insluiten(x, y, kleur, 1, 1);
+            this.insarray[6] = insluiten(x, y, kleur, 1, 0);
+            this.insarray[7] = insluiten(x, y, kleur, 1, -1);
+            bool allfalse = true;
+            for (int t = 0; t < 8 && allfalse; t++)
+            { if (insarray[t]) allfalse = false; }
+            if (allfalse) return false; else return true;
+        }
+
+        bool insluiten(int x, int y, int kleur, int xrichting, int yrichting)
+        {
+            int t = x + xrichting, u = y + yrichting;
+            bool eerste = true;
+            while (t < breedte - 1 && t > 0 && u < lengte - 1 && u > 0)
             {
-                k[x, y] = 1;
-                return true;
+                if (kl[t,u] == 0) return false;
+                if (kl[t,u] == kleur) { if (eerste) return false; else return true; }
+            
+                t += xrichting;
+                u += yrichting;
+                eerste = false;
             }
             return false;
         }
+        public void veranderkleur(int x, int y, int kleur)
+        {
+            int andere = 3 - kleur;
+            kl[x, y] = kleur;
+
+            for (int n = 0; n < 8; n++)
+            {
+
+                switch (n)
+                {
+                    case 0: kleuringesloten(x, y, kleur, 0, -1); break;
+                    case 1: kleuringesloten(x, y, kleur, -1, -1); break;
+                    case 2: kleuringesloten(x, y, kleur, -1, 0); break;
+                    case 3: kleuringesloten(x, y, kleur, -1, 1); break;
+                    case 4: kleuringesloten(x, y, kleur, 0, 1); break;
+                    case 5: kleuringesloten(x, y, kleur, 1, 1);  break;
+                    case 6: kleuringesloten(x, y, kleur, 1, 0); break;
+                    case 7: kleuringesloten(x, y, kleur, 1, -1); break;
+                }
+            }
+            Speelbord.Invalidate();
+        }
+
+        public void kleuringesloten(int x, int y, int kleur, int xrichting, int yrichting)
+        {
+            int andere = 3 - kleur;
+            bool eindebereikt = false;
+            int t = x + xrichting, u = y + yrichting;
+            while (eindebereikt == false)
+            {
+                if (this.kl[t, u] == andere) { this.kl[t, u] = kleur; }
+                if (this.kl[t, u] == kleur) { eindebereikt = true; }
+                
+
+                t += xrichting;
+                u += yrichting;
+            }
+        }
+
         private void tekenscherm(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
@@ -98,19 +213,18 @@ namespace CirkelKlikker
             Graphics gr = pea.Graphics;
             SolidBrush br = new SolidBrush(Color.Transparent);
             gr.SmoothingMode = SmoothingMode.AntiAlias;
-            for (int t = 0; t < (breedte); t++)
+            for (int t = 0; t < breedte; t++)
             {
-                for (int u = 0; u < (lengte); u++)
+                for (int u = 0; u < lengte; u++)
                 {
                     switch (kl[t, u])
                     {
-                        case 0: br.Color = Color.Transparent; break;
                         case 1: br.Color = Color.Blue; break;
                         case 2: br.Color = Color.Red; break;
 
                     }
-                    gr.FillEllipse(br,
-                                    this.xs[t] - straal, this.ys[u] - straal,
+                    if (kl[t,u] > 0)gr.FillEllipse(br,
+                                    t * 33 + 2, u * 33 + 2,
                                     diameter, diameter);
                 }
 
