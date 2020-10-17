@@ -164,7 +164,9 @@ namespace Reversi
             this.insarray[6] = insluiten(x, y, 1, 0);
             this.insarray[7] = insluiten(x, y, 1, -1);
         }
-        bool richtingen(int x, int y)
+
+        // Methode die bepaald welke richtingen ingeklikt kunnen worden
+          bool richtingen(int x, int y)
         {
             if (kl[x, y] > 0) return false;
             // checkt of het geklikte vakje niet aan rand van het bord zit en of het een andere steen kan 
@@ -175,7 +177,7 @@ namespace Reversi
             if (allfalse) return false; else return true;
         }
 
-
+        //Methode die ervoor zorgt dat alleen een steen geplaatst kan worden die een insluiting veroorzaken
         bool insluiten(int x, int y, int xrichting, int yrichting)
         {
             int t = x + xrichting, u = y + yrichting;
@@ -191,6 +193,8 @@ namespace Reversi
             }
             return false;
         }
+
+        //Methode die na het plaatsen van een steen de ingesloten stenen naar dezelfde kleur veranderen als de insluiters.
         public void veranderkleur(int x, int y)
         {
             this.arrayOpslag(x, y);
@@ -213,10 +217,11 @@ namespace Reversi
                     }
                 }
             }
-            Scorebord.Invalidate();
-            Speelbord.Invalidate();
+            Scorebord.Invalidate();  // De scorebord wordt getekend met de recenste score tussen rood en blauw
+            Speelbord.Invalidate();  //Het speelbord wordt getekened met de geplaatste stenen
         }
 
+        //Methode die controleert of één steen of meerdere stenen ingesloten is door 2 stenen van de tegenovergestelde kleur (bv. 2 rood ingesloten door 2 blauw)
         public void kleuringesloten(int x, int y, int xrichting, int yrichting)
         {
             {
@@ -234,6 +239,7 @@ namespace Reversi
             }
         }
 
+        //Methode die het aantal blauwe en rode stenen telt.
         public void plaats(int x, int y)
         {
             kl[x, y] = kleur;
@@ -244,6 +250,7 @@ namespace Reversi
             }
         }
 
+        //Update het aantal stenen respectief per kleur als dus ingesloten stenen van kleur zijn veranderd.
         public void vervang(int x, int y)
         {
             kl[x, y] = kleur;
@@ -254,6 +261,7 @@ namespace Reversi
             }
         }
 
+        //Methode dat de speelbord tekent
         private void tekenscherm(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
@@ -266,6 +274,8 @@ namespace Reversi
                 gr.DrawLine(Pens.Black, 21, 20 + 33 * t, 21 + 33 * breedte, 20 + 33 * t);
             }
         }
+        //Methode die de gekleurde stenen. 
+        //En de transparante stenen voor de hulp-knop tekent (als op de hulp-knop wordt gedrukt)
         private void teken(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
@@ -290,6 +300,7 @@ namespace Reversi
             }
         }
 
+        //Tekent de scoreboard
         private void score(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
@@ -301,6 +312,7 @@ namespace Reversi
             gr.DrawString(aantalrood + " stenen", ComicSans, Brushes.Red, 32, 32);
         }
 
+        //Update de label die aangeeft wie aan de beurt is naar wie heeft gewonnen of dat het gelijkspel als het spel is ge-eindigd
         private void EindeSpel()
         {
             geeindigd = true;
@@ -310,11 +322,13 @@ namespace Reversi
             else Status.Text = "Remise";
         }
 
+        //Methode die het spel opnieuw start als geklikt is op de "nieuw spel" knop
         private void NieuwSpel(object sender, EventArgs ea)
         {
             Application.Restart();
         }
         
+        //Methode die de transparante stenen die worden getekend als op de hulp-knop is geklikt weghaald, als een steen wordt geplaatst
         private void Hulp(object sender, EventArgs ea)
         {
             hulpNodig = !hulpNodig;
@@ -322,8 +336,10 @@ namespace Reversi
         }
     }
 
+    
     class Reversi2
     {
+        //Main void, wordt dus als eerste uitgevoerd, start 'Form', wat het interactieve scherm is.
         static void Main()
         {
             Reversi scherm;
