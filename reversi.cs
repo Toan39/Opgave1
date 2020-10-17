@@ -26,7 +26,7 @@ namespace Reversi
         private int mogzet = 0, overgeslagen = 0;
         private int aantalrood = 2, aantalblauw = 2;
 
-        //onderdelen v/d interface die ook na de initialisatie worden aangeroepen
+        //Onderdelen v/d interface die ook na de initialisatie worden aangeroepen
         Panel Speelbord;
         Panel Scorebord;
         Label Status;
@@ -46,7 +46,7 @@ namespace Reversi
 
             //alle onderdelen van het scherm
 
-            //Speelbord//
+            //Speelbord
             Speelbord = new Panel()
             {
                 Location = new Point(20, 20),
@@ -57,7 +57,7 @@ namespace Reversi
             Speelbord.MouseClick += klik;
             this.Controls.Add(Speelbord);
 
-            //Score bord met aantal stenen per kleur//
+            //Score bord met aantal stenen per kleur
             Scorebord = new Panel()
             {
                 Location = new Point(20, 270),
@@ -66,7 +66,7 @@ namespace Reversi
             Scorebord.Paint += score;
             this.Controls.Add(Scorebord);
 
-            //nieuw spel-knop//
+            //Nieuw Spel-knop
             Button NieuwKnop = new Button()
             {
                 Size = new Size(80, 20),
@@ -76,7 +76,7 @@ namespace Reversi
             NieuwKnop.Click += NieuwSpel;
             this.Controls.Add(NieuwKnop);
 
-            //Hulpknop//
+            //Hulpknop
             Button HulpKnop = new Button()
             {
                 Size = new Size(80, 20),
@@ -86,15 +86,15 @@ namespace Reversi
             HulpKnop.Click += Hulp;
             this.Controls.Add(HulpKnop);
 
-            //Chekbox waardoor de "hulpcirkels" na het eindigen van een beurt blijven//
+            //Chekbox waardoor de helpknop wordt vergrendelt en de "hulpcirkels" na het einde van een beurt niet verdwijnen
             Helplock = new CheckBox()
             {
                 Location = new Point(200, 254),
-                Size = new Size(15,15)
+                Size = new Size(15, 15)
             };
             this.Controls.Add(Helplock);
 
-            //Label naast de checkbox//
+            //Label naast de checkbox
             Label Lock = new Label()
             {
                 Text = "Lock Help",
@@ -103,7 +103,7 @@ namespace Reversi
             };
             this.Controls.Add(Lock);
 
-            //Status//
+            //Status
             Status = new Label()
             {
                 Size = new Size(150, 20),
@@ -118,42 +118,43 @@ namespace Reversi
             kl[breedte / 2, lengte / 2 - 1] = 2;
             kl[breedte / 2 - 1, lengte / 2 - 1] = 1;
 
-            legaal(kleur); //wordt aan het begin van het spel uitgevoerd, zodat de speler op de eerste legale vakjes kan klikken
+            legaal(kleur); //Wordt aan het begin van het spel uitgevoerd, zodat de speler op de eerste legale vakjes kan klikken
         }
 
         public void klik(object sender, MouseEventArgs mea)//De eventhandler voor wanneer je op het speelbord klikt
         {
-            x = mea.X / 33; //met het x- en y-coordinaat wordt berekent op welk vakje de speler heeft geklikt, elk vakje is 33*33 pixels
+            x = mea.X / 33; //Met het x- en y-coordinaat wordt berekent op welk vakje de speler heeft geklikt, elk vakje is 33*33 pixels
             y = mea.Y / 33;
 
             if (!geeindigd)
             {
-                if (leg[x, y])//kijkt of het geklikte vakje legaal is
+                if (leg[x, y])//Kijkt of het geklikte vakje legaal is
                 {
-                    overgeslagen = 0;//aantal overgeslagen beurten in een rij wordt gereset
-                    if(!Helplock.Checked) hulpNodig = false;//Als de hulp niet gelockd is, wordt de hulpfunctie uitgezet 
+                    overgeslagen = 0;//Aantal overgeslagen beurten in een rij wordt gereset
+                    if (!Helplock.Checked) hulpNodig = false;//Als de hulp niet gelockd is, wordt de hulpfunctie uitgezet 
                     this.veranderkleur(x, y);//Update het bord
                     this.kleur = 3 - kleur;//Verandert de kleur die aan de beurt is 3 - 2(rood) = 1(blauw) en vice versa
                 }
                 mogzet = 0;//Reset de mogelijke zetten voor de volgende beurt
-                legaal(kleur);//wordt uigevoerd (zie de methode)
-                while (mogzet == 0 && !geeindigd)//zolang het aantal mogelijke zetten 0 is(wanneer er een beurt moet worden overgeslagen) en het spel niet is geeindigd
+                legaal(kleur);//Wordt uigevoerd (zie de methode)
+                while (mogzet == 0 && !geeindigd)//Zolang het aantal mogelijke zetten 0 is(wanneer er een beurt moet worden overgeslagen) en het spel niet is geeindigd
                 {
                     overgeslagen++;
                     if (overgeslagen == 2)
                     {
-                        EindeSpel();//als er 2 beurten achter elkaar zijn overgeslagen is het spel afgelopen, het spel kan namelijk niet verder als niemand een zet kan doen
+                        EindeSpel();//Als er 2 beurten achter elkaar zijn overgeslagen is het spel afgelopen, het spel kan namelijk niet verder als niemand een zet kan doen
                     }
                     this.kleur = 3 - kleur;//volgende speler aan de beurt
                     legaal(kleur);
                 }
             }
-            if (!geeindigd) //Deze if-statement zorgt ervoor dat de uitslag van het potje niet wordt overschreven met wie er aan zet is
+            if (!geeindigd) //Zorgt ervoor dat de uitslag van het potje niet wordt overschreven met wie er aan zet is
+                //Laat zien wie er aan zet is
                 switch (kleur)
                 {
                     case 1: Status.Text = "Blauw is aan zet"; break;
                     case 2: Status.Text = "Rood is aan zet"; break;
-                } //Laat zien wie er aan zet is
+                }
         }
 
         public void legaal(int kleur) //Gaat elk vakje op het bord af en checkt of er een legale zet gedaan kan worden.
@@ -163,14 +164,14 @@ namespace Reversi
                 for (int u = 0; u < lengte; u++)
                 {
                     leg[t, u] = richtingen(t, u);//"Legale vakjes" worden opgeslagen in een 2-dimensionale array.
-                    if (leg[t, u]) mogzet++;//voor elke mogelijke zet wordt het aantal mogelijke zetten geincrement 
+                    if (leg[t, u]) mogzet++;//Voor elke mogelijke zet wordt het aantal mogelijke zetten geincrement 
                 }
             }
         }
 
         public void arrayOpslag(int x, int y) //Voert insluiten() uit in de 8 nodige richtingen en slaat deze waarden op in een bool array. 
         {
-            this.insarray[0] = insluiten(x, y, 0, -1);//naar boven,
+            this.insarray[0] = insluiten(x, y, 0, -1);//Naar boven,
             this.insarray[1] = insluiten(x, y, -1, -1);//linksboven,
             this.insarray[2] = insluiten(x, y, -1, 0);//links,
             this.insarray[3] = insluiten(x, y, -1, 1);//linksonder,
@@ -178,11 +179,12 @@ namespace Reversi
             this.insarray[5] = insluiten(x, y, 1, 1);//rechtsonder,
             this.insarray[6] = insluiten(x, y, 1, 0);//rechts
             this.insarray[7] = insluiten(x, y, 1, -1);//en rechtsboven.
-        // Methode die bepaald welke richtingen ingeklikt kunnen worden
-          bool richtingen(int x, int y)
+        }
+        // Methode die bepaalt welke richtingen ingeklikt kunnen worden
+        bool richtingen(int x, int y)
         {
             if (kl[x, y] > 0) return false;
-            // checkt of het geklikte vakje niet aan rand van het bord zit en of het een andere steen kan 
+            // Checkt of het geklikte vakje niet aan rand van het bord zit en of het een andere steen kan 
             this.arrayOpslag(x, y);
             bool allfalse = true;
             for (int t = 0; t < 8; t++)
@@ -230,7 +232,7 @@ namespace Reversi
                     }
                 }
             }
-            Scorebord.Invalidate();  // De scorebord wordt getekend met de recenste score tussen rood en blauw
+            Scorebord.Invalidate();  //De scorebord wordt getekend met de recenste score tussen rood en blauw
             Speelbord.Invalidate();  //Het speelbord wordt getekened met de geplaatste stenen
         }
 
@@ -252,7 +254,7 @@ namespace Reversi
             }
         }
 
-        //Methode die het aantal blauwe en rode stenen telt.
+        //Het plaatsen van een steen op een leeg vakje
         public void plaats(int x, int y)
         {
             kl[x, y] = kleur;
@@ -263,7 +265,7 @@ namespace Reversi
             }
         }
 
-        //Update het aantal stenen respectief per kleur als dus ingesloten stenen van kleur zijn veranderd.
+        //Het vervangen van een ingesloten steen naar de kleur die aan de beurt is
         public void vervang(int x, int y)
         {
             kl[x, y] = kleur;
@@ -287,8 +289,8 @@ namespace Reversi
                 gr.DrawLine(Pens.Black, 21, 20 + 33 * t, 21 + 33 * breedte, 20 + 33 * t);
             }
         }
-        //Methode die de gekleurde stenen. 
-        //En de transparante stenen voor de hulp-knop tekent (als op de hulp-knop wordt gedrukt)
+        //Methode die de gekleurde stenen
+        //en de transparante stenen voor de hulp-knop tekent (als op de hulp-knop wordt gedrukt)
         private void teken(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
@@ -313,7 +315,7 @@ namespace Reversi
             }
         }
 
-        //Tekent de scoreboard
+        //Tekent het scorebord
         private void score(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
@@ -325,7 +327,7 @@ namespace Reversi
             gr.DrawString(aantalrood + " stenen", ComicSans, Brushes.Red, 32, 32);
         }
 
-        //Update de label die aangeeft wie aan de beurt is naar wie heeft gewonnen of dat het gelijkspel als het spel is ge-eindigd
+        //Update de label die aangeeft wie aan de beurt is naar wie heeft gewonnen of dat het gelijkspel als het spel is geëindigd
         private void EindeSpel()
         {
             geeindigd = true;
@@ -335,21 +337,24 @@ namespace Reversi
             else Status.Text = "Remise";
         }
 
-        //Methode die het spel opnieuw start als geklikt is op de "nieuw spel" knop
+        //Methode die het spel opnieuw start als geklikt is op de "Nieuw Spel"-knop
         private void NieuwSpel(object sender, EventArgs ea)
         {
-            Application.Restart();
+            Application.Restart();//Sluit de huidige instance en start een nieuwe op
         }
-        
-        //Methode die de transparante stenen die worden getekend als op de hulp-knop is geklikt weghaald, als een steen wordt geplaatst
+
+        //Methode die hulpNodig als het ware omschakelt en het speelbord opnieuw tekent, zodat de mogelijke zetten verschijnen of verdwijnen.
         private void Hulp(object sender, EventArgs ea)
         {
-            hulpNodig = !hulpNodig;
-            Speelbord.Invalidate();
+            if (!Helplock.Checked)
+            {
+                hulpNodig = !hulpNodig;
+                Speelbord.Invalidate();
+            }
         }
     }
 
-    
+
     class Reversi2
     {
         //Main void, wordt dus als eerste uitgevoerd, start 'Form', wat het interactieve scherm is.
