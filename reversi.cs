@@ -7,9 +7,9 @@ using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
-namespace CirkelKlikker
+namespace Reversi
 {
-    class CirkelKlikker : Form
+    class Reversi : Form
     {
         Font ComicSans = new Font("Comic Sans MS", 14);
         const int lengte = 6, breedte = 6;
@@ -28,7 +28,7 @@ namespace CirkelKlikker
         Panel Scorebord;
         Label Status;
         CheckBox Helplock;
-        public CirkelKlikker()
+        public Reversi()
         {
             this.Size = new Size(300, 380);
             this.kl = new int[breedte, lengte];
@@ -36,7 +36,7 @@ namespace CirkelKlikker
             this.insarray = new bool[8];
             this.x = 0;
             this.y = 0;
-            this.Text = "CirkelKlikker";
+            this.Text = "Reversi";
             this.Paint += tekenscherm;
 
             Speelbord = new Panel()
@@ -152,37 +152,6 @@ namespace CirkelKlikker
                 }
             }
         }
-
-        //public bool richtingen(int x, int y, int kleur)
-        //{
-        //    if (kl[x, y] > 0) return false;
-        //    int andere = 3 - kleur;
-
-        //    // checkt of het geklikte vakje niet aan rand van het bord zit en of het een andere steen kan insluiten
-        //    if (y > 2 && kl[x, y - 1] == andere && kl[x, y - 2] == kleur) return true; // naar boven
-        //    if (y > 2 && x < breedte - 3 && kl[x + 1, y - 1] == andere && kl[x + 2, y - 2] == kleur) return true; // naar rechtsboven
-        //    if (x < breedte - 3 && kl[x + 1, y] == andere && kl[x + 2, y] == kleur) return true; // naar rechts
-        //    if (y < lengte - 3 && x < breedte - 3 && kl[x + 1, y + 1] == andere && kl[x + 2, y + 2] == kleur) return true; // naar rechtsonder
-        //    if (y < lengte - 3 && kl[x, y + 1] == andere && kl[x, y + 2] == kleur) return true; // naar onder
-        //    if (y < lengte - 3 && x > 2 && kl[x - 1, y + 1] == andere && kl[x - 2, y + 2] == kleur) return true; // naar linksonder
-        //    if (x > 2 && kl[x - 1, y] == andere && kl[x - 2, y] == kleur) return true; // naar links
-        //    if (y > 2 && x > 2 && kl[x - 1, y - 1] == andere && kl[x - 2, y - 2] == kleur) return true; // naar linksboven
-        //    return false;
-        //}
-        //public void veranderkleur(int x, int y, int kleur)
-        //{
-        //    int andere = 3 - kleur;
-        //    kl[x, y] = kleur;
-
-        //    if (y > 2                             && kl[x, y - 1] == andere     && kl[x, y - 2] == kleur)       kl[x, y -1] = kleur; // naar boven
-        //    if (y > 2 && x < breedte - 3          && kl[x + 1, y - 1] == andere && kl[x + 2, y - 2] == kleur)   kl[x+ 1, y - 1] = kleur; // naar rechtsboven
-        //    if (x < breedte - 3                   && kl[x + 1, y] == andere     && kl[x + 2, y] == kleur)       kl[x + 1, y] = kleur; // naar rechts
-        //    if (y < lengte - 3 && x < breedte - 3 && kl[x + 1, y + 1] == andere && kl[x + 2, y + 2] == kleur)   kl[x + 1, y + 1] = kleur; // naar rechtsonder
-        //    if (y < lengte - 3                    && kl[x, y + 1] == andere     && kl[x, y + 2] == kleur)       kl[x, y + 1] = kleur; // naar onder
-        //    if (y < lengte - 3 && x > 2           && kl[x - 1, y + 1] == andere && kl[x - 2, y + 2] == kleur)   kl[x - 1, y + 1] = kleur; // naar linksonder
-        //    if (x > 2                             && kl[x - 1, y] == andere     && kl[x - 2, y] == kleur)       kl[x - 1, y] = kleur; // naar links
-        //    if (y > 2 && x > 2                    && kl[x - 1, y - 1] == andere && kl[x - 2, y - 2] == kleur)   kl[x - 1, y - 1] = kleur; // naar linksboven
-        //}
 
         public void arrayOpslag(int x, int y)
         {
@@ -353,12 +322,12 @@ namespace CirkelKlikker
         }
     }
 
-    class HalloWin3
+    class Reversi2
     {
         static void Main()
         {
-            CirkelKlikker scherm;
-            scherm = new CirkelKlikker();
+            Reversi scherm;
+            scherm = new Reversi();
             Application.Run(scherm);
         }
     }
