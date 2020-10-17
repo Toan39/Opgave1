@@ -11,6 +11,7 @@ namespace CirkelKlikker
 {
     class CirkelKlikker : Form
     {
+        Font ComicSans = new Font("Comic Sans MS", 14);
         const int lengte = 6, breedte = 6;
         const int diameter = 29;
         const int steenoffset = (34 - diameter) / 2;
@@ -24,11 +25,12 @@ namespace CirkelKlikker
         private int mogzet = 0, overgeslagen = 0;
         private int aantalrood = 2, aantalblauw = 2;
         Panel Speelbord;
+        Panel Scorebord;
         Label Status;
+        CheckBox Helplock;
         public CirkelKlikker()
         {
-            this.Size = new Size(300, 350);
-
+            this.Size = new Size(300, 380);
             this.kl = new int[breedte, lengte];
             this.leg = new bool[breedte, lengte];
             this.insarray = new bool[8];
@@ -46,6 +48,14 @@ namespace CirkelKlikker
             Speelbord.Paint += teken;
             Speelbord.MouseClick += klik;
             this.Controls.Add(Speelbord);
+
+            Scorebord = new Panel()
+            {
+                Location = new Point(20, 270),
+                Size = new Size(150, 60)
+            };
+            Scorebord.Paint += score;
+            this.Controls.Add(Scorebord);
 
             Button NieuwKnop = new Button()
             {
@@ -65,6 +75,21 @@ namespace CirkelKlikker
             HulpKnop.Click += Hulp;
             this.Controls.Add(HulpKnop);
 
+            Helplock = new CheckBox()
+            {
+                Location = new Point(200, 254),
+                Size = new Size(15,15)
+            };
+            this.Controls.Add(Helplock);
+
+            Label Lock = new Label()
+            {
+                Text = "Lock Help",
+                Size = new Size(60, 30),
+                Location = new Point(215, 254)
+            };
+            this.Controls.Add(Lock);
+
             Status = new Label()
             {
                 Size = new Size(150, 20),
@@ -79,20 +104,6 @@ namespace CirkelKlikker
             kl[breedte / 2 - 1, lengte / 2 - 1] = 1;
 
             legaal(kleur);
-
-            // for loop voor maken van x * y panels.
-            //for (int t = 0; t < 6; t++)
-            //{
-            //    for (int v = 0; v < 6; v++)
-            //    {
-
-            //        Speelbord = new Panel() { Location = new Point(20 + 33 * t, 20 + 33 * v), Size = new Size(32, 32), BackColor = Color.FromArgb(0, Color.White) };
-            //        Speelbord.Paint += teken;
-            //        Speelbord.MouseClick += klik;
-            //        this.Controls.Add(Speelbord);
-            //    }
-            //}
-
         }
 
         public void klik(object sender, MouseEventArgs mea)
@@ -105,6 +116,7 @@ namespace CirkelKlikker
                 if (leg[x, y])
                 {
                     overgeslagen = 0;
+                    if(!Helplock.Checked) hulpNodig = false;
                     this.veranderkleur(x, y);
                     this.kleur = 3 - kleur;
                 }
@@ -232,6 +244,7 @@ namespace CirkelKlikker
                     }
                 }
             }
+            Scorebord.Invalidate();
             Speelbord.Invalidate();
         }
 
@@ -287,7 +300,7 @@ namespace CirkelKlikker
         private void teken(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
-            SolidBrush br = new SolidBrush(Color.LightBlue);
+            SolidBrush br = new SolidBrush(Color.Blue);
             Pen pen = Pens.Black;
             gr.SmoothingMode = SmoothingMode.AntiAlias;
             for (int t = 0; t < breedte; t++)
@@ -306,6 +319,17 @@ namespace CirkelKlikker
                 }
 
             }
+        }
+
+        private void score(object sender, PaintEventArgs pea)
+        {
+            Graphics gr = pea.Graphics;
+            Pen pen = Pens.Blue;
+            gr.SmoothingMode = SmoothingMode.AntiAlias;
+            gr.FillEllipse(Brushes.Blue, 0, 0, diameter, diameter);
+            gr.FillEllipse(Brushes.Red, 0, 30, diameter, diameter);
+            gr.DrawString(aantalblauw + " stenen", ComicSans, Brushes.Blue, 32, 2);
+            gr.DrawString(aantalrood + " stenen", ComicSans, Brushes.Red, 32, 32);
         }
 
         private void EindeSpel()
