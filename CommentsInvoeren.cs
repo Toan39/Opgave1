@@ -5,7 +5,7 @@ using System.Globalization;
 
 class OpgaveForm : Form
 {
-    //Declaratie van alle Interface-onderdelen die buiten OpgavenForm() aangeroepen moeten kunnen worden //hoi1234
+    //Declaratie van alle Interface-onderdelen die buiten OpgavenForm() aangeroepen moeten kunnen worden //hoi12345
     TextBox PaneelX;
     TextBox PaneelY;
     TextBox PaneelS;
